@@ -8,9 +8,9 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:5173/login",
+   // origin: "http://localhost:5173/login",
     credentials: true
-}))
+})) 
 
 const authRouter = require("./routes/auth")
 const profileRouter = require("./routes/profile")
