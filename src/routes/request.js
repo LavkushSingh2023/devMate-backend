@@ -43,7 +43,7 @@ requestRouter.post(
         const data = await connectionRequest.save()
 
         res.json({
-            message: `${req.user.firstName} is ${status} in ${toUser.firstName}`,
+            message: `${req.user.name} is ${status} in ${toUser.name}`,
             data
         })
     }catch(err){
@@ -80,7 +80,7 @@ requestRouter.post(
             const data = await connectionRequest.save()
 
             res.send({
-                message: `${loggedInUser.firstName} ${status} connection request of ${sender.firstName}`,
+                message: `${loggedInUser.name} ${status} connection request of ${sender.name}`,
                 data
             })
         }catch(err){

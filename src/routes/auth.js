@@ -8,15 +8,23 @@ const authRouter = express.Router()
 authRouter.post("/signup", async (req, res) => {
     try{
         validateSignupData(req)
-        const {firstName, lastName, emailId, password} = req.body
+        const {name, role, bio, avatar, skills, rating, email, password} = req.body
         const bcryptPassword = await bcrypt.hash(password, 10)
         const user = new User({
-            firstName,
-            lastName,
-            emailId,
+            name,
+            role,
+            bio,
+            avatar,
+            skills,
+            rating,
+            email,
             password: bcryptPassword
         })
         await user.save()
+
+        const token = await user.getJWT()
+        res.cookie("token", token)
+        
         res.send("User added successfully!")
     }catch(err){
         res.status(404).send("Error happend to adding the user: " + err.message)
@@ -25,8 +33,8 @@ authRouter.post("/signup", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
     try{
-        const {emailId, password} = req.body
-        const user = await User.findOne({emailId: emailId})
+        const {email, password} = req.body
+        const user = await User.findOne({email: email})
 
         if(!user){
             throw new Error("emailId is not present in DB!")
@@ -39,7 +47,10 @@ authRouter.post("/login", async (req, res) => {
 
             res.cookie("token", token)
 
-            res.send("User loggedIn successfully!")
+            res.json({
+                message: "User loggedIn successfully!",
+                user
+        })
         }else{
             throw new Error("please enter correct password!")
         }

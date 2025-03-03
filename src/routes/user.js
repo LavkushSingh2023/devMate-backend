@@ -5,8 +5,7 @@ const User = require("../models/user")
 
 const userRouter = express.Router()
 
-const USER_SAFE_DATA = "firstName lastName Age gender photoUrl"
-
+const USER_SAFE_DATA = "name, role, bio, avatar, skills, rating"
 
 userRouter.get(
     "/user/requests/received",
@@ -17,7 +16,7 @@ userRouter.get(
 
             const connectionRequests = await ConnectionRequest.find({
                 toUserId: loggedInUser._id,
-                status: "accepted"
+                status: "interested"
             }).populate(
                 "fromUserId", USER_SAFE_DATA
             )
@@ -97,6 +96,21 @@ userRouter.get(
             res.json(users)
         }catch(err){
             res.status(400).json({Error: err.message})
+        }
+    }
+)
+
+userRouter.get("/allUsers",
+    userAuth,
+    async (req, res) => {
+        try{
+            const users = await User.find()
+            if(users.length === 0){
+                res.send("Users not found!")
+            }
+            res.json(users)
+        }catch(error){
+            res.status(404).json({Error: error.message})
         }
     }
 )

@@ -2,51 +2,59 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const validator = require("validator")
+require("dotenv").config();
 
 const userSchema = mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-        minLength: 4,
-        maxLength: 50
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      minLength: [3, "Name must be at least 4 characters"],
+      maxLength: [50, "Name must not exceed 50 characters"],
+      trim: true,
     },
-    lastName: {
-        type: String
+    role: {
+      type: String,
+      default: "User",
+    //   enum: ["User", "Admin", "Developer", "Designer"],
     },
-    emailId: {
-        type: String,
-        lowercase: true,
-        unique: true,
-        trim: true,
-        required: true,
-        validate(value){
-            if(!validator.isEmail(value)){
-                throw new Error(`${value}: is not a valid emailId`)
-            }
-        } 
+    bio: {
+      type: String,
+      trim: true,
+      maxLength: [300, "Bio cannot exceed 300 characters"],
+    },
+    avatar: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value) => validator.isURL(value),
+        message: "Invalid avatar URL",
+      },
+    },
+    skills: {
+      type: [String], // Array of skill strings
+      default: [],
+    },
+    rating: {
+      type: Number,
+      min: [0, "Rating must be at least 0"],
+      max: [5, "Rating cannot exceed 5"],
+      default: 0,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: {
+        validator: validator.isEmail,
+        message: (props) => `${props.value} is not a valid email`,
+      },
     },
     password: {
-        type: String
-    },
-    Age: {
-        type: Number,
-        min: 18
-    },
-    gender: {
-        type: String,
-        validate(value){
-            if(!["male", "female", "others"].includes(value)){
-                throw new Error(`${value}: is not a valid gender`)
-            }
-        }
-    },
-    photoUrl:{
-        type: String,
-        validate(value){
-            if(!validator.isURL(value)){
-                throw new Error(`${value}: is not a valid photoUrl`)
-            }
-        }
+      type: String,
+      required: [true, "Password is required"],
+      minLength: [5, "Password must be at least 6 characters"],
     },
 },
 {
@@ -57,7 +65,7 @@ const userSchema = mongoose.Schema({
 userSchema.methods.getJWT = async function () {
     const user = this
 
-    const token = await jwt.sign({_id: user._id}, "devTinder@123", {expiresIn: "1d"})
+    const token = await jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: "1d"})
 
     return token
 }

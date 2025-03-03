@@ -3,6 +3,7 @@ const {userAuth} = require("../middlewares/auth")
 const jwt = require("jsonwebtoken")
 const User = require("../models/user")
 const {validateEditProfileData} = require("../utils/validation")
+require("dotenv").config();
 
 const profileRouter = express.Router()
 
@@ -11,7 +12,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
         const cookie = req.cookies
         const {token} = cookie
         
-        const decodedMessage = await jwt.verify(token, "devTinder@123")
+        const decodedMessage = await jwt.verify(token, process.env.JWT_SECRET)
         const {_id} = decodedMessage
 
         const user = await User.findById({_id})
@@ -40,11 +41,11 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         await loggInUser.save()
 
         res.json({
-            message: `${loggInUser.firstName}, your profile updated successfully!`,
-            "updated User": loggInUser
+            message: `${loggInUser.name}, your profile updated successfully!`,
+            "Updated User": loggInUser
         })
     }catch(err){
-        res.status(400).send("Error: " + err.message)
+        res.status(400).send("Error in updating profile: " + err.message)
     }
 })
 
