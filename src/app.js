@@ -9,10 +9,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Use CORS with dynamic origin reflection for all routes
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.NODE_ENV === "production" ? process.env.CORS_ORIGIN : true,
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
   })
