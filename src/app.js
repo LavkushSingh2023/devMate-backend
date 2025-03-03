@@ -12,7 +12,7 @@ app.use(cookieParser());
 // Use CORS with dynamic origin reflection for all routes
 app.use(
   cors({
-    origin: true, // Reflect the request origin instead of using '*'
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
   })
