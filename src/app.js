@@ -28,13 +28,10 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 
-connectDB()
-  .then(() => {
-    console.log("Database connection established successfully!");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server listening on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 3000
+
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error("Unable to connect with database: " + err.message);
-  });
+});

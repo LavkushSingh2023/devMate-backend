@@ -3,7 +3,6 @@ const {userAuth} = require("../middlewares/auth")
 const jwt = require("jsonwebtoken")
 const User = require("../models/user")
 const {validateEditProfileData} = require("../utils/validation")
-require("dotenv").config();
 
 const profileRouter = express.Router()
 

@@ -45,7 +45,12 @@ authRouter.post("/login", async (req, res) => {
         if(isValidPassword){
             const token = await user.getJWT()
 
-            res.cookie("token", token)
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+            });
+
 
             res.json({
                 message: "User loggedIn successfully!",
