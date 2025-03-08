@@ -6,16 +6,16 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser());
-
 app.use(
   cors({
     origin: process.env.NODE_ENV === "production" ? process.env.CORS_ORIGIN : true,
-    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
+
+app.use(express.json());
+app.use(cookieParser());
 
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
