@@ -5,7 +5,7 @@ const User = require("../models/user")
 
 const userRouter = express.Router()
 
-const USER_SAFE_DATA = "name, role, bio, avatar, skills, rating"
+const USER_SAFE_DATA = "name, role, avatar"
 
 userRouter.get(
     "/user/requests/received",
@@ -16,12 +16,10 @@ userRouter.get(
 
             const connectionRequests = await ConnectionRequest.find({
                 toUserId: loggedInUser._id,
-                status: "interested"
+                status: "requested"
             }).populate(
                 "fromUserId", USER_SAFE_DATA
             )
-
-            console.log(connectionRequests)
 
             res.json({
                 message: "Data fetched successfully!",
@@ -114,6 +112,18 @@ userRouter.get("/allUsers",
         }
     }
 )
+
+userRouter.get("/allRequests/:id",
+     userAuth,
+     async (req, res) => {
+        try{
+            const user = await User.findById(req.params.id)
+            res.json(user)
+        }catch(err){
+            res.status(404).json({Error: err.message})
+        }
+     }
+    )
 
     module.exports = userRouter
 

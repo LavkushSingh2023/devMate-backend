@@ -13,7 +13,7 @@ requestRouter.post(
         const fromUserId = req.user._id
         const {status, toUserId} = req.params
 
-        const isAllowedStatus = ["interested", "ignored"]
+        const isAllowedStatus = ["requested", "ignored"]
         if(!isAllowedStatus.includes(status)){
             throw new Error(`"${status}" status is not valid!`)
         }
