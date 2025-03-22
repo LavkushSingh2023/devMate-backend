@@ -1,6 +1,7 @@
 const express = require("express")
 const {validateSignupData} = require("../utils/validation")
 const bcrypt = require("bcrypt")
+const nodemailer = require("nodemailer")
 const User = require("../models/user")
 
 const authRouter = express.Router()
@@ -72,5 +73,32 @@ authRouter.post("/logout", (req, res) => {
         })
         .send(`User logged out successfully!`)
 })
+
+authRouter.post("/send-email", async (req, res) => {
+  const { email, subject, message } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL, // Your Gmail address
+      pass: process.env.PASSWORD, // Your Gmail app password
+    },
+  });
+
+  const mailOptions = {
+    from: email,
+    replyTo: email,
+    to: process.env.EMAIL,
+    subject: subject,
+    text: message,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: "Email sent successfully!" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error sending email", error });
+  }
+});
 
 module.exports = authRouter
