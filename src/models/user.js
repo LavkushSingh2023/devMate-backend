@@ -22,12 +22,17 @@ const userSchema = mongoose.Schema({
       maxLength: [300, "Bio cannot exceed 300 characters"],
     },
     avatar: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (value) => validator.isURL(value),
-        message: "Invalid avatar URL",
-      },
+        type: String,
+        trim: true,
+        validate: {
+            validator: (value) => {
+            return (
+                validator.isURL(value) ||
+                /^data:image\/[a-zA-Z]+;base64,/.test(value)
+            );
+        },
+        message: "Invalid avatar URL or Base64 image"
+        }
     },
     skills: {
       type: [String], // Array of skill strings
