@@ -3,6 +3,7 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
+const http = require("http")
 
 const app = express();
 
@@ -29,8 +30,13 @@ app.use("/", userRouter);
 
 const PORT = process.env.PORT || 3000
 
+// Chat services
+const server = http.createServer(app)
+const chat = require("./routes/chat")
+chat(server)
+
 connectDB().then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
     });
 });
