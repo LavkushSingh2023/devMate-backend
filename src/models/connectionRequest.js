@@ -19,7 +19,7 @@ const connectionRequestSchema = mongoose.Schema({
         }
     }
 },
-{timestamsps: true}
+{timestamps: true}
 )
 
 connectionRequestSchema.index({fromUserId: 1, toUserId: 1})
