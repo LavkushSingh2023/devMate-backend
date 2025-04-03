@@ -1,5 +1,5 @@
-const ConnectionRequest = require("../models/connectionRequest")
-const User = require("../models/user")
+const ConnectionRequest = require("../models/connectionRequest");
+const User = require("../models/user");
 
 const USER_SAFE_DATA = "name, role, avatar";
 

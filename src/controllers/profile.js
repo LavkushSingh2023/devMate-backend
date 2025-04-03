@@ -1,6 +1,6 @@
 const { validateEditProfileData } = require("../utils/validation");
 const jwt = require("jsonwebtoken");
-const User  = require("../models/user.js"); 
+const User = require("../models/user.js");
 
 const profileViewController = async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 const { validateSignupData } = require("../utils/validation");
-const bcrypt = require("bcrypt")
-const nodemailer = require("nodemailer")
-const User = require("../models/user")
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const User = require("../models/user");
 
 const signupController = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
-const ConnectionRequest = require("../models/connectionRequest")
-const user = require("../models/user")
+const ConnectionRequest = require("../models/connectionRequest");
+const user = require("../models/user");
 
 const requestSendingController = async (req, res) => {
   try {
