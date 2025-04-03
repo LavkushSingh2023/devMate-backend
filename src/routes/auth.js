@@ -48,7 +48,7 @@ authRouter.post("/login", async (req, res) => {
 
             const isProd = process.env.NODE_ENV === "production";
 
-                res.cookie("token", token, {
+            res.cookie("token", token, {
                 httpOnly: true,
                 secure: isProd,                   // true in production (HTTPS)
                 sameSite: isProd ? "none" : "lax",  // "none" for production cross-site cookies

@@ -9,11 +9,15 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" ? process.env.CORS_ORIGIN : true,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.CORS_ORIGIN // Use specific origin for production
+        : "http://localhost:5173", // Allow frontend origin in development
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
+    credentials: true, // Must have a specific origin (not "*")
   })
 );
+
 
 app.use(express.json());
 app.use(cookieParser());
